@@ -9,11 +9,12 @@ struct IB {
   }
 };
 struct Board {
-  string out;
+  string out = "";
   int board[9][9]{};
   int assumptions[9][9][10]{};
   bool countM = false;
   int count = 0;
+  bool toCout = false;
   // Board(string fN) : out(fN, out.out) {}
   // int assumptions_old[9][9][10]{};
   bool eInSquare(Index ind, int e) {
@@ -53,7 +54,7 @@ struct Board {
     return eInCol(ind, e) && eInRow(ind, e) && eInSquare(ind, e);
   };
   string read() {
-    string out;
+    string out = "";
     for (int i = 0; i < 9; i++) {
       for (int j = 0; j < 9; j++) {
         char e;
@@ -70,21 +71,36 @@ struct Board {
     };
     return out;
   };
-  void read(string in) {
+  void read(string &in) {
     for (int i = 0; i < 9; i++) {
+      // cout << "read" << endl;
       for (int j = 0; j < 9; j++) {
-        board[i][j] = in[i + j];
+        char e = in[j + i * 9];
+
+        if (e == '.') {
+          e = '0';
+        }
+        if (e == '-' || e == '|' || e == '\n' || e == ' ') {
+          continue;
+        }
+
+        board[i][j] = e - '0';
       }
     }
+    // cout << "Not from read" << endl;
   };
   string write() {
     for (int i = 0; i < 9; i++) {
+      // cout << "write" << endl;
       for (int j = 0; j < 9; j++) {
         char e = '0' + board[i][j];
+        // cout << "board : " << board[i][j] << endl;
         if (e == '0') {
           e = '.';
         };
-        out += e + " ";
+        // cout << "e:" << e << endl;
+        out += e;
+        out += " ";
         if (j % 3 == 2 && j > 0) {
           out += "| ";
         };
@@ -97,7 +113,11 @@ struct Board {
     };
     return out;
   };
-  void writeToCout() { cout << out; };
+  void writeToCout() {
+    // cout << "writeToCout" << endl;
+    cout << out;
+    // cout << "Not from writeToCout" << endl;
+  };
   bool isValidSudoku() {
     Index ind(0, 0);
     do {
