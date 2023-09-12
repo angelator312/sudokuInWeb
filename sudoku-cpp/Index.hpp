@@ -6,8 +6,7 @@ struct Index {
     this->y = y;
     this->x = x;
   };
-  Index() {
-  };
+  Index(){};
   bool isValid() {
     return (this->y >= 0 && this->y <= 8) && (this->x >= 0 && this->x <= 8);
   };

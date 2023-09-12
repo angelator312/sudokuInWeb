@@ -1,4 +1,5 @@
 #include "Index.hpp"
+#include <cstring>
 #include <fstream>
 struct IB {
   Index ind;
@@ -11,7 +12,7 @@ struct IB {
 struct Board {
   string out = "";
   int board[9][9]{};
-  int assumptions[9][9][10]{};
+  char assumptions[9][9][10]{};
   bool countM = false;
   int count = 0;
   bool toCout = false;
@@ -153,22 +154,26 @@ struct Board {
     } while (ind.next());
     return ind;
   }
-  void copyAssumptions(int (&to)[9][9][10], int (&from)[9][9][10]) {
-    Index ind(0, 0);
-    do {
-      for (int i = 0; i < 10; i++) {
-        to[ind.y][ind.x][i] = from[ind.y][ind.x][i];
-      }
-    } while (ind.next());
+  // void copyAssumptions2(char (&to)[9][9][10], char (&from)[9][9][10]) {
+  //   Index ind(0, 0);
+  //   do {
+  //     for (int i = 0; i < 10; i++) {
+  //       to[ind.y][ind.x][i] = from[ind.y][ind.x][i];
+  //     }
+  //   } while (ind.next());
+  // }
+  void copyAssumptions(char (&to)[9][9][10], char (&from)[9][9][10]) {
+    memcpy(to, from, 9 * 9 * 10 * sizeof(char));
   }
-  int sumAssumptions() {
-    int sum = 0;
-    Index ind;
-    do {
-      sum += assumptions[ind.y][ind.x][0];
-    } while (ind.next());
-    return sum;
-  }
+
+  // int sumAssumptions() {
+  //   int sum = 0;
+  //   Index ind;
+  //   do {
+  //     sum += assumptions[ind.y][ind.x][0];
+  //   } while (ind.next());
+  //   return sum;
+  // }
   void buildAssumptions() {
     Index ind(0, 0);
     do {
@@ -224,10 +229,10 @@ struct Board {
     }
 
     // cout << "[" << ind.toString() << "]" << endl;
-    int(&assum)[10] = assumptions[ind.y][ind.x];
+    char(&assum)[10] = assumptions[ind.y][ind.x];
     for (int number = 1; number < 10; number++) {
       if (assum[number] == 1) {
-        int assump[9][9][10];
+        char assump[9][9][10];
         copyAssumptions(assump, assumptions);
         board[ind.y][ind.x] = number;
         deleteAssumptions(ind);
@@ -237,11 +242,11 @@ struct Board {
           board[ind.y][ind.x] = 0;
           continue;
         } else {
-          return isValidSudoku();
+          return true;
         }
       };
     };
-    return isValidSudoku();
+    return false;
   };
   bool algorithm() {
     buildAssumptions();

@@ -1,4 +1,5 @@
 #include "Board.hpp"
+#include <chrono>
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -17,7 +18,18 @@ int main(int argc, char *argv[]) {
   if (c) {
     sudoku.countM = true;
   };
+  auto start_time = chrono::high_resolution_clock::now();
   sudoku.algorithm();
+  auto end_time = chrono::high_resolution_clock::now();
+  if (toCout) {
+    cout
+        << chrono::duration_cast<chrono::seconds>(end_time - start_time).count()
+        << "s ";
+    cout << chrono::duration_cast<chrono::microseconds>(end_time - start_time)
+                .count()
+         << "us " << endl;
+  }
+
   if (c) {
     if (toCout) {
       cout << "Sudoku solutions : " << sudoku.count << endl;
