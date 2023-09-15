@@ -15,7 +15,7 @@ endif
 all:sudoku-main html/sudoku.js
 
 html/sudoku.js: sudoku-js.cpp Board.hpp Index.hpp
-	mkdir html
+	mkdir -p html
 	$(CRT) run --rm -v `pwd`:/src -u `id -u`:`id -g` --userns=$(USERNS) emscripten/emsdk emcc -lembind $< -o $@
 	cp index.html html
 
