@@ -72,7 +72,7 @@ struct Board {
     };
     return out;
   };
-  void read(string &in) {
+  void read(string in) {
     for (int i = 0; i < 9; i++) {
       // cout << "read" << endl;
       for (int j = 0; j < 9; j++) {

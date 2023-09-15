@@ -38,6 +38,9 @@
 # compiled files
 sudoku-main
 
+# compiled javascript
+html/
+
 # vsCode files
 
 .vscode/settings.json
